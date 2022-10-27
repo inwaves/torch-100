@@ -36,7 +36,7 @@ HEADERS = ktx_to_dict(os.path.join('source', 'headers.ktx'))
 QHA = ktx_to_dict(os.path.join('source', 'exercises100.ktx'))
 
 
-def create_jupyter_notebook(destination_filename='100_Numpy_exercises.ipynb'):
+def create_jupyter_notebook(destination_filename='100_pytorch_exercises.ipynb'):
     """ Programmatically create jupyter notebook with the questions (and hints and solutions if required)
     saved under source files """
 
@@ -66,7 +66,7 @@ def create_jupyter_notebook(destination_filename='100_Numpy_exercises.ipynb'):
     nbf.write(nb, destination_filename)
 
 
-def create_jupyter_notebook_random_question(destination_filename='100_Numpy_random.ipynb'):
+def create_jupyter_notebook_random_question(destination_filename='100_pytorch_random.ipynb'):
     """ Programmatically create jupyter notebook with the questions (and hints and solutions if required)
     saved under source files """
 

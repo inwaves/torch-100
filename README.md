@@ -1,22 +1,14 @@
-## 100 numpy exercises
+## 100 PyTorch exercises
 
-[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org:/repo/rougier/numpy-100/notebooks/100%20Numpy%20exercises.ipynb)
+This is a fork of the [100 numpy exercises](https://github.com/rougier/numpy-100).
+The exercises themselves are due to various authors, and the collection (and idea, as far as I can tell) is due to [@rougier](https://github.com/rougier). 
 
-This is a collection of numpy exercises from numpy mailing list, stack overflow, and numpy documentation. I've also created some problems myself to reach the 100 limit. The goal of this collection is to offer a quick reference for both old and new users but also to provide a set of exercises for those who teach. For extended exercises, make sure to read [From Python to NumPy](http://www.labri.fr/perso/nrougier/from-python-to-numpy/).
+This fork uses the PyTorch library instead, and where applicable highlights differences in their APIs. 
 
-→ [Test them on Binder](http://mybinder.org:/repo/rougier/numpy-100/notebooks/100_Numpy_exercises.ipynb)  
-→ [Read them on GitHub](100_Numpy_exercises.md)  
+### Usage
+Try your hand at each of the exercises directly in the Jupyter notebook.
 
-Note: markdown and ipython notebook are created programmatically from the source data in `source/exercises.ktx`.
-To modify the content of these files, please change the text in the source and run the `generators.py` module with a python
-interpreter with the libraries under `requirements.txt` installed.
+You can look at hints for each question by running, e.g.: `hint(10)`.
 
-The keyed text format (`ktx`) is a minimal human readable key-values to store text (markdown or others) indexed by keys. 
+You can see the suggested solution by running `solution(10)`. Note that solutions are not designed to be exhaustive – there's usually more than one way to achieve the desired behaviour.
 
-This work is licensed under the MIT license.  
-[![DOI](https://zenodo.org/badge/10173/rougier/numpy-100.svg)](https://zenodo.org/badge/latestdoi/10173/rougier/numpy-100)
-
-
-### Variants in Other Languages
-
- - **Julia**: [100 Julia Exercises](https://github.com/RoyiAvital/Julia100Exercises).

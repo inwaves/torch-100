@@ -1,80 +1,83 @@
 < q1
-Import the numpy package under the name `np` (★☆☆)
+Import the pytorch package under the name `t`. (★☆☆)
 
 < h1
 hint: import … as
 
 < a1
-import numpy as np
+import torch as t
 
 < q2
-Print the numpy version and the configuration (★☆☆)
+Print the torch version. (★☆☆)
 
 < h2
-hint: np.__version__, np.show_config)
+hint: t.__version__
 
 < a2
-print(np.__version__)
-np.show_config()
+print(t.__version__)
 
 < q3
-Create a null vector of size 10 (★☆☆)
+Check whether there is a GPU available and print its name. (★☆☆)
 
 < h3
-hint: np.zeros
+hint: t.cuda.is_available, t.cuda.get_device_name
 
 < a3
-Z = np.zeros(10)
-print(Z)
+# Author: Andrei Alexandru
+cuda_enabled = t.cuda.is_available()
+device_name = t.cuda.get_device_name() # Throws an error if Pytorch not compiled with CUDA!
+
+print(f"{cuda_enabled=}, {device_name=}")
 
 < q4
-How to find the memory size of any array (★☆☆)
+Create a null tensor of size 10 (★☆☆)
 
 < h4
-hint: size, itemsize
+hint: t.zeros
 
 < a4
-Z = np.zeros((10,10))
-print("%d bytes" % (Z.size * Z.itemsize))
+Z = t.zeros(10)
+print(Z)
 
 < q5
-How to get the documentation of the numpy add function from the command line? (★☆☆)
+How to find the memory size of any tensor (★☆☆)
 
 < h5
-hint: np.info
+hint: size, element_size
 
 < a5
-%run `python -c "import numpy; numpy.info(numpy.add)"`
+Z = t.zeros((10,10))
+print(f"{(Z.size * Z.element_size)} bytes.")
 
 < q6
-Create a null vector of size 10 but the fifth value which is 1 (★☆☆)
+Create a null tensor of size 10 but the fifth value which is 1 (★☆☆)
 
 < h6
-hint: array[4]
+hint: tensor[4]
 
 < a6
-Z = np.zeros(10)
+Z = t.zeros(10)
 Z[4] = 1
 print(Z)
 
 < q7
-Create a vector with values ranging from 10 to 49 (★☆☆)
+Create a tensor with values ranging from 10 to 49 (★☆☆)
 
 < h7
 hint: arange
 
 < a7
-Z = np.arange(10,50)
+Z = t.arange(10,50)
 print(Z)
 
 < q8
-Reverse a vector (first element becomes last) (★☆☆)
+Reverse a tensor (first element becomes last) (★☆☆)
 
 < h8
-hint: array[::-1]
+hint: tensor[::-1]
 
 < a8
-Z = np.arange(50)
+Z = t.arange(50)
 Z = Z[::-1]
 print(Z)
 
@@ -85,96 +88,116 @@ Create a 3x3 matrix with values ranging from 0 to 8 (★☆☆)
 hint: reshape
 
 < a9
-Z = np.arange(9).reshape(3, 3)
+Z = t.arange(9).reshape(3, 3)
 print(Z)
 
 < q10
 Find indices of non-zero elements from [1,2,0,0,4,0] (★☆☆)
 
 < h10
-hint: np.nonzero
+hint: t.nonzero or t.where
 
 < a10
-nz = np.nonzero([1,2,0,0,4,0])
+in = t.tensor([1,2,0,0,4,0])
+# With nonzero.
+nz = in.nonzero()
 print(nz)
+
+# With t.where
+nz = t.where(in != 0) # Returns a tuple.
+print(nz[0])
 
 < q11
 Create a 3x3 identity matrix (★☆☆)
 
 < h11
-hint: np.eye
+hint: t.eye or t.diag and t.ones
 
 < a11
-Z = np.eye(3)
+Z = t.eye(3)
+
+# Option 2:
+Z = t.diag(t.ones(3))
 print(Z)
 
 < q12
-Create a 3x3x3 array with random values (★☆☆)
+Create a 3x3x3 tensor with random float values in the interval [0.0, 1.0). (★☆☆)
 
 < h12
-hint: np.random.random
+hint: t.random
 
 < a12
-Z = np.random.random((3,3,3))
+# API difference: in numpy, you must call random
+# with a tuple, or a rand with a list of dimensions:
+Z = np.random.random((3, 3, 3))
+Z = np.random.rand(3, 3, 3)
+
+# In Pytorch, rand is a function available in the root of the module:
+Z = t.rand(3, 3, 3)
 print(Z)
 
 < q13
-Create a 10x10 array with random values and find the minimum and maximum values (★☆☆)
+Create a 10x10 tensor with random values and find the minimum and maximum values. (★☆☆)
 
 < h13
 hint: min, max
 
 < a13
-Z = np.random.random((10,10))
-Zmin, Zmax = Z.min(), Z.max()
+Z = t.rand(10,10)
+
+# Note the .item() calls: the functions return
+# singleton tensors, and we want to extract their value.
+Zmin, Zmax = Z.min().item(), Z.max().item()
 print(Zmin, Zmax)
 
 < q14
-Create a random vector of size 30 and find the mean value (★☆☆)
+Create a tensor of size 30, containing normally distributed random values. Find its mean value. (★☆☆)
 
 < h14
 hint: mean
 
 < a14
-Z = np.random.random(30)
+Z = t.randn(30)
 m = Z.mean()
 print(m)
 
 < q15
-Create a 2d array with 1 on the border and 0 inside (★☆☆)
+Create a 2D tensor with 1 on the border and 0 inside. (★☆☆)
 
 < h15
-hint: array[1:-1, 1:-1]
+hint: slice into the tensor.
 
 < a15
-Z = np.ones((10,10))
-Z[1:-1,1:-1] = 0
+Z = t.ones((10,10))
+Z[1:-1, 1:-1] = 0
 print(Z)
 
 < q16
-How to add a border (filled with 0's) around an existing array? (★☆☆)
+How to add a border (filled with 0s) around an existing tensor? (★☆☆)
 
 < h16
-hint: np.pad
+hint: slice into the tensor or use t.nn.functional.pad
 
 < a16
-Z = np.ones((5,5))
-Z = np.pad(Z, pad_width=1, mode='constant', constant_values=0)
-print(Z)
+Z = t.ones((5, 5))
 
 # Using fancy indexing
 Z[:, [0, -1]] = 0
 Z[[0, -1], :] = 0
 print(Z)
 
+# Using the pad function, where the pad format is (left, top, right, bottom):
+Z = t.nn.functional.pad(Z, (1, 1, 1, 1), mode='constant', value=0)
+print(Z)
+
 < q17
 What is the result of the following expression? (★☆☆)
 ```python
-0 * np.nan
-np.nan == np.nan
-np.inf > np.nan
-np.nan - np.nan
-np.nan in set([np.nan])
+0 * t.nan
+t.nan == t.nan
+t.inf > t.nan
+t.nan - t.nan
+t.nan in set([t.nan])
 0.3 == 3 * 0.1
 ```
 
@@ -182,52 +205,52 @@ np.nan in set([np.nan])
 hint: NaN = not a number, inf = infinity
 
 < a17
-print(0 * np.nan)
-print(np.nan == np.nan)
-print(np.inf > np.nan)
-print(np.nan - np.nan)
-print(np.nan in set([np.nan]))
+print(0 * t.nan)
+print(t.nan == t.nan)
+print(t.inf > t.nan)
+print(t.nan - t.nan)
+print(t.nan in set([t.nan]))
 print(0.3 == 3 * 0.1)
 
 < q18
-Create a 5x5 matrix with values 1,2,3,4 just below the diagonal (★☆☆)
+Create a 5x5 matrix with the values 1, 2, 3, 4 just below the diagonal. (★☆☆)
 
 < h18
-hint: np.diag
+hint: t.arange and t.diag
 
 < a18
-Z = np.diag(1+np.arange(4),k=-1)
+Z = t.diag(1 + t.arange(4), diagonal=-1)
 print(Z)
 
 < q19
-Create a 8x8 matrix and fill it with a checkerboard pattern (★☆☆)
+Create a 8x8 matrix and fill it with a checkerboard pattern (alternating 0s and 1s). (★☆☆)
 
 < h19
-hint: array[::2]
+hint: use the step component of a slice to fill the matrix.
 
 < a19
-Z = np.zeros((8,8),dtype=int)
+Z = t.zeros((8, 8), dtype=int)
 Z[1::2,::2] = 1
 Z[::2,1::2] = 1
 print(Z)
 
 < q20
-Consider a (6,7,8) shape array, what is the index (x,y,z) of the 100th element? (★☆☆)
+Consider a (6,7,8) shape tensor, what is the index (x,y,z) of the 100th element? (★☆☆)
 
 < h20
-hint: np.unravel_index
+hint: t.unravel_index
 
 < a20
-print(np.unravel_index(99,(6,7,8)))
+print(t.unravel_index(99,(6,7,8)))
 
 < q21
 Create a checkerboard 8x8 matrix using the tile function (★☆☆)
 
 < h21
-hint: np.tile
+hint: t.tile
 
 < a21
-Z = np.tile( np.array([[0,1],[1,0]]), (4,4))
+Z = t.tile( t.tensor([[0,1],[1,0]]), (4,4))
 print(Z)
 
 < q22
@@ -237,21 +260,21 @@ Normalize a 5x5 random matrix (★☆☆)
 hint: (x -mean)/std
 
 < a22
-Z = np.random.random((5,5))
-Z = (Z - np.mean (Z)) / (np.std (Z))
+Z = t.random.random((5,5))
+Z = (Z - t.mean (Z)) / (t.std (Z))
 print(Z)
 
 < q23
 Create a custom dtype that describes a color as four unsigned bytes (RGBA) (★☆☆)
 
 < h23
-hint: np.dtype
+hint: t.dtype
 
 < a23
-color = np.dtype([("r", np.ubyte),
-                  ("g", np.ubyte),
-                  ("b", np.ubyte),
-                  ("a", np.ubyte)])
+color = t.dtype([("r", t.ubyte),
+                  ("g", t.ubyte),
+                  ("b", t.ubyte),
+                  ("a", t.ubyte)])
 
 < q24
 Multiply a 5x3 matrix by a 3x2 matrix (real matrix product) (★☆☆)
@@ -260,15 +283,15 @@ Multiply a 5x3 matrix by a 3x2 matrix (real matrix product) (★☆☆)
 hint:
 
 < a24
-Z = np.dot(np.ones((5,3)), np.ones((3,2)))
+Z = t.dot(t.ones((5,3)), t.ones((3,2)))
 print(Z)
 
 # Alternative solution, in Python 3.5 and above
-Z = np.ones((5,3)) @ np.ones((3,2))
+Z = t.ones((5,3)) @ t.ones((3,2))
 print(Z)
 
 < q25
-Given a 1D array, negate all elements which are between 3 and 8, in place. (★☆☆)
+Given a 1D tensor, negate all elements which are between 3 and 8, in place. (★☆☆)
 
 < h25
 hint: >, <
@@ -276,7 +299,7 @@ hint: >, <
 < a25
 # Author: Evgeni Burovski
 
-Z = np.arange(11)
+Z = t.arange(11)
 Z[(3 < Z) & (Z < 8)] *= -1
 print(Z)
 
@@ -291,7 +314,7 @@ print(sum(range(5),-1))
 ```
 
 < h26
-hint: np.sum
+hint: t.sum
 
 < a26
 # Author: Jake VanderPlas
@@ -301,7 +324,7 @@ from numpy import *
 print(sum(range(5),-1))
 
 < q27
-Consider an integer vector Z, which of these expressions are legal? (★☆☆)
+Consider an integer tensor Z, which of these expressions are legal? (★☆☆)
 ```python
 Z**Z
 2 << Z >> 2
@@ -325,212 +348,212 @@ Z<Z>Z
 < q28
 What are the result of the following expressions? (★☆☆)
 ```python
-np.array(0) / np.array(0)
-np.array(0) // np.array(0)
-np.array([np.nan]).astype(int).astype(float)
+t.tensor(0) / t.tensor(0)
+t.tensor(0) // t.tensor(0)
+t.tensor([t.nan]).astype(int).astype(float)
 ```
 
 < h28
 No hints provided...
 
 < a28
-print(np.array(0) / np.array(0))
-print(np.array(0) // np.array(0))
-print(np.array([np.nan]).astype(int).astype(float))
+print(t.tensor(0) / t.tensor(0))
+print(t.tensor(0) // t.tensor(0))
+print(t.tensor([t.nan]).astype(int).astype(float))
 
 < q29
-How to round away from zero a float array ? (★☆☆)
+How to round away from zero a float tensor ? (★☆☆)
 
 < h29
-hint: np.uniform, np.copysign, np.ceil, np.abs, np.where
+hint: t.uniform, t.copysign, t.ceil, t.abs, t.where
 
 < a29
 # Author: Charles R Harris
 
-Z = np.random.uniform(-10,+10,10)
-print(np.copysign(np.ceil(np.abs(Z)), Z))
+Z = t.random.uniform(-10,+10,10)
+print(t.copysign(t.ceil(t.abs(Z)), Z))
 
 # More readable but less efficient
-print(np.where(Z>0, np.ceil(Z), np.floor(Z)))
+print(t.where(Z>0, t.ceil(Z), t.floor(Z)))
 
 < q30
-How to find common values between two arrays? (★☆☆)
+How to find common values between two tensors? (★☆☆)
 
 < h30
-hint: np.intersect1d
+hint: t.intersect1d
 
 < a30
-Z1 = np.random.randint(0,10,10)
-Z2 = np.random.randint(0,10,10)
-print(np.intersect1d(Z1,Z2))
+Z1 = t.random.randint(0,10,10)
+Z2 = t.random.randint(0,10,10)
+print(t.intersect1d(Z1,Z2))
 
 < q31
 How to ignore all numpy warnings (not recommended)? (★☆☆)
 
 < h31
-hint: np.seterr, np.errstate
+hint: t.seterr, t.errstate
 
 < a31
 # Suicide mode on
-defaults = np.seterr(all="ignore")
-Z = np.ones(1) / 0
+defaults = t.seterr(all="ignore")
+Z = t.ones(1) / 0
 
 # Back to sanity
-_ = np.seterr(**defaults)
+_ = t.seterr(**defaults)
 
 # Equivalently with a context manager
-with np.errstate(all="ignore"):
-    np.arange(3) / 0
+with t.errstate(all="ignore"):
+    t.arange(3) / 0
 
 < q32
 Is the following expressions true? (★☆☆)
 ```python
-np.sqrt(-1) == np.emath.sqrt(-1)
+t.sqrt(-1) == t.emath.sqrt(-1)
 ```
 
 < h32
 hint: imaginary number
 
 < a32
-np.sqrt(-1) == np.emath.sqrt(-1)
+t.sqrt(-1) == t.emath.sqrt(-1)
 
 < q33
 How to get the dates of yesterday, today and tomorrow? (★☆☆)
 
 < h33
-hint: np.datetime64, np.timedelta64
+hint: t.datetime64, t.timedelta64
 
 < a33
-yesterday = np.datetime64('today') - np.timedelta64(1)
-today     = np.datetime64('today')
-tomorrow  = np.datetime64('today') + np.timedelta64(1)
+yesterday = t.datetime64('today') - t.timedelta64(1)
+today     = t.datetime64('today')
+tomorrow  = t.datetime64('today') + t.timedelta64(1)
 
 < q34
 How to get all the dates corresponding to the month of July 2016? (★★☆)
 
 < h34
-hint: np.arange(dtype=datetime64['D'])
+hint: t.arange(dtype=datetime64['D'])
 
 < a34
-Z = np.arange('2016-07', '2016-08', dtype='datetime64[D]')
+Z = t.arange('2016-07', '2016-08', dtype='datetime64[D]')
 print(Z)
 
 < q35
 How to compute ((A+B)*(-A/2)) in place (without copy)? (★★☆)
 
 < h35
-hint: np.add(out=), np.negative(out=), np.multiply(out=), np.divide(out=)
+hint: t.add(out=), t.negative(out=), t.multiply(out=), t.divide(out=)
 
 < a35
-A = np.ones(3)*1
-B = np.ones(3)*2
-np.add(A,B,out=B)
-np.divide(A,2,out=A)
-np.negative(A,out=A)
-np.multiply(A,B,out=A)
+A = t.ones(3)*1
+B = t.ones(3)*2
+t.add(A,B,out=B)
+t.divide(A,2,out=A)
+t.negative(A,out=A)
+t.multiply(A,B,out=A)
 
 < q36
-Extract the integer part of a random array of positive numbers using 4 different methods (★★☆)
+Extract the integer part of a random tensor of positive numbers using 4 different methods (★★☆)
 
 < h36
-hint: %, np.floor, astype, np.trunc
+hint: %, t.floor, astype, t.trunc
 
 < a36
-Z = np.random.uniform(0,10,10)
+Z = t.random.uniform(0,10,10)
 
 print(Z - Z%1)
 print(Z // 1)
-print(np.floor(Z))
+print(t.floor(Z))
 print(Z.astype(int))
-print(np.trunc(Z))
+print(t.trunc(Z))
 
 < q37
 Create a 5x5 matrix with row values ranging from 0 to 4 (★★☆)
 
 < h37
-hint: np.arange
+hint: t.arange
 
 < a37
-Z = np.zeros((5,5))
-Z += np.arange(5)
+Z = t.zeros((5,5))
+Z += t.arange(5)
 print(Z)
 
 # without broadcasting
-Z = np.tile(np.arange(0, 5), (5,1))
+Z = t.tile(t.arange(0, 5), (5,1))
 print(Z)
 
 < q38
-Consider a generator function that generates 10 integers and use it to build an array (★☆☆)
+Consider a generator function that generates 10 integers and use it to build an tensor (★☆☆)
 
 < h38
-hint: np.fromiter
+hint: t.fromiter
 
 < a38
 def generate():
     for x in range(10):
         yield x
-Z = np.fromiter(generate(),dtype=float,count=-1)
+Z = t.fromiter(generate(),dtype=float,count=-1)
 print(Z)
 
 < q39
-Create a vector of size 10 with values ranging from 0 to 1, both excluded (★★☆)
+Create a tensor of size 10 with values ranging from 0 to 1, both excluded (★★☆)
 
 < h39
-hint: np.linspace
+hint: t.linspace
 
 < a39
-Z = np.linspace(0,1,11,endpoint=False)[1:]
+Z = t.linspace(0,1,11,endpoint=False)[1:]
 print(Z)
 
 < q40
-Create a random vector of size 10 and sort it (★★☆)
+Create a random tensor of size 10 and sort it (★★☆)
 
 < h40
 hint: sort
 
 < a40
-Z = np.random.random(10)
+Z = t.random.random(10)
 Z.sort()
 print(Z)
 
 < q41
-How to sum a small array faster than np.sum? (★★☆)
+How to sum a small tensor faster than t.sum? (★★☆)
 
 < h41
-hint: np.add.reduce
+hint: t.add.reduce
 
 < a41
 # Author: Evgeni Burovski
 
-Z = np.arange(10)
-np.add.reduce(Z)
+Z = t.arange(10)
+t.add.reduce(Z)
 
 < q42
-Consider two random array A and B, check if they are equal (★★☆)
+Consider two random tensor A and B, check if they are equal (★★☆)
 
 < h42
-hint: np.allclose, np.array_equal
+hint: t.allclose, t.tensor_equal
 
 < a42
-A = np.random.randint(0,2,5)
-B = np.random.randint(0,2,5)
+A = t.random.randint(0,2,5)
+B = t.random.randint(0,2,5)
 
-# Assuming identical shape of the arrays and a tolerance for the comparison of values
-equal = np.allclose(A,B)
+# Assuming identical shape of the tensors and a tolerance for the comparison of values
+equal = t.allclose(A,B)
 print(equal)
 
 # Checking both the shape and the element values, no tolerance (values have to be exactly equal)
-equal = np.array_equal(A,B)
+equal = t.tensor_equal(A,B)
 print(equal)
 
 < q43
-Make an array immutable (read-only) (★★☆)
+Make an tensor immutable (read-only) (★★☆)
 
 < h43
 hint: flags.writeable
 
 < a43
-Z = np.zeros(10)
+Z = t.zeros(10)
 Z.flags.writeable = False
 Z[0] = 1
 
@@ -538,99 +561,99 @@ Z[0] = 1
 Consider a random 10x2 matrix representing cartesian coordinates, convert them to polar coordinates (★★☆)
 
 < h44
-hint: np.sqrt, np.arctan2
+hint: t.sqrt, t.arctan2
 
 < a44
-Z = np.random.random((10,2))
+Z = t.random.random((10,2))
 X,Y = Z[:,0], Z[:,1]
-R = np.sqrt(X**2+Y**2)
-T = np.arctan2(Y,X)
+R = t.sqrt(X**2+Y**2)
+T = t.arctan2(Y,X)
 print(R)
 print(T)
 
 < q45
-Create random vector of size 10 and replace the maximum value by 0 (★★☆)
+Create random tensor of size 10 and replace the maximum value by 0 (★★☆)
 
 < h45
 hint: argmax
 
 < a45
-Z = np.random.random(10)
+Z = t.random.random(10)
 Z[Z.argmax()] = 0
 print(Z)
 
 < q46
-Create a structured array with `x` and `y` coordinates covering the [0,1]x[0,1] area (★★☆)
+Create a structured tensor with `x` and `y` coordinates covering the [0,1]x[0,1] area (★★☆)
 
 < h46
-hint: np.meshgrid
+hint: t.meshgrid
 
 < a46
-Z = np.zeros((5,5), [('x',float),('y',float)])
-Z['x'], Z['y'] = np.meshgrid(np.linspace(0,1,5),
-                             np.linspace(0,1,5))
+Z = t.zeros((5,5), [('x',float),('y',float)])
+Z['x'], Z['y'] = t.meshgrid(t.linspace(0,1,5),
+                             t.linspace(0,1,5))
 print(Z)
 
 < q47
-Given two arrays, X and Y, construct the Cauchy matrix C (Cij =1/(xi - yj)) (★★☆)
+Given two tensors, X and Y, construct the Cauchy matrix C (Cij =1/(xi - yj)) (★★☆)
 
 < h47
-hint: np.subtract.outer
+hint: t.subtract.outer
 
 < a47
 # Author: Evgeni Burovski
 
-X = np.arange(8)
+X = t.arange(8)
 Y = X + 0.5
-C = 1.0 / np.subtract.outer(X, Y)
-print(np.linalg.det(C))
+C = 1.0 / t.subtract.outer(X, Y)
+print(t.linalg.det(C))
 
 < q48
 Print the minimum and maximum representable value for each numpy scalar type (★★☆)
 
 < h48
-hint: np.iinfo, np.finfo, eps
+hint: t.iinfo, t.finfo, eps
 
 < a48
-for dtype in [np.int8, np.int32, np.int64]:
-   print(np.iinfo(dtype).min)
-   print(np.iinfo(dtype).max)
-for dtype in [np.float32, np.float64]:
-   print(np.finfo(dtype).min)
-   print(np.finfo(dtype).max)
-   print(np.finfo(dtype).eps)
+for dtype in [t.int8, t.int32, t.int64]:
+   print(t.iinfo(dtype).min)
+   print(t.iinfo(dtype).max)
+for dtype in [t.float32, t.float64]:
+   print(t.finfo(dtype).min)
+   print(t.finfo(dtype).max)
+   print(t.finfo(dtype).eps)
 
 < q49
-How to print all the values of an array? (★★☆)
+How to print all the values of an tensor? (★★☆)
 
 < h49
-hint: np.set_printoptions
+hint: t.set_printoptions
 
 < a49
-np.set_printoptions(threshold=float("inf"))
-Z = np.zeros((40,40))
+t.set_printoptions(threshold=float("inf"))
+Z = t.zeros((40,40))
 print(Z)
 
 < q50
-How to find the closest value (to a given scalar) in a vector? (★★☆)
+How to find the closest value (to a given scalar) in a tensor? (★★☆)
 
 < h50
 hint: argmin
 
 < a50
-Z = np.arange(100)
-v = np.random.uniform(0,100)
-index = (np.abs(Z-v)).argmin()
+Z = t.arange(100)
+v = t.random.uniform(0,100)
+index = (t.abs(Z-v)).argmin()
 print(Z[index])
 
 < q51
-Create a structured array representing a position (x,y) and a color (r,g,b) (★★☆)
+Create a structured tensor representing a position (x,y) and a color (r,g,b) (★★☆)
 
 < h51
 hint: dtype
 
 < a51
-Z = np.zeros(10, [ ('position', [ ('x', float, 1),
+Z = t.zeros(10, [ ('position', [ ('x', float, 1),
                                   ('y', float, 1)]),
                    ('color',    [ ('r', float, 1),
                                   ('g', float, 1),
@@ -638,15 +661,15 @@ Z = np.zeros(10, [ ('position', [ ('x', float, 1),
 print(Z)
 
 < q52
-Consider a random vector with shape (100,2) representing coordinates, find point by point distances (★★☆)
+Consider a random tensor with shape (100,2) representing coordinates, find point by point distances (★★☆)
 
 < h52
-hint: np.atleast_2d, T, np.sqrt
+hint: t.atleast_2d, T, t.sqrt
 
 < a52
-Z = np.random.random((10,2))
-X,Y = np.atleast_2d(Z[:,0], Z[:,1])
-D = np.sqrt( (X-X.T)**2 + (Y-Y.T)**2)
+Z = t.random.random((10,2))
+X,Y = t.atleast_2d(Z[:,0], Z[:,1])
+D = t.sqrt( (X-X.T)**2 + (Y-Y.T)**2)
 print(D)
 
 # Much faster with scipy
@@ -654,12 +677,12 @@ import scipy
 # Thanks Gavin Heverly-Coulson (#issue 1)
 import scipy.spatial
 
-Z = np.random.random((10,2))
+Z = t.random.random((10,2))
 D = scipy.spatial.distance.cdist(Z,Z)
 print(D)
 
 < q53
-How to convert a float (32 bits) array into an integer (32 bits) in place?
+How to convert a float (32 bits) tensor into an integer (32 bits) in place?
 
 < h53
 hint: view and [:] =
@@ -667,8 +690,8 @@ hint: view and [:] =
 < a53
 # Thanks Vikas (https://stackoverflow.com/a/10622758/5989906)
 # & unutbu (https://stackoverflow.com/a/4396247/5989906)
-Z = (np.random.rand(10)*100).astype(np.float32)
-Y = Z.view(np.int32)
+Z = (t.random.rand(10)*100).astype(t.float32)
+Y = Z.view(t.int32)
 Y[:] = Z
 print(Y)
 
@@ -681,7 +704,7 @@ How to read the following file? (★★☆)
 ```
 
 < h54
-hint: np.genfromtxt
+hint: t.genfromtxt
 
 < a54
 from io import StringIO
@@ -693,48 +716,48 @@ s = StringIO('''1, 2, 3, 4, 5
 
                  ,  , 9,10,11
 ''')
-Z = np.genfromtxt(s, delimiter=",", dtype=np.int)
+Z = t.genfromtxt(s, delimiter=",", dtype=t.int)
 print(Z)
 
 < q55
-What is the equivalent of enumerate for numpy arrays? (★★☆)
+What is the equivalent of enumerate for numpy tensors? (★★☆)
 
 < h55
-hint: np.ndenumerate, np.ndindex
+hint: t.ndenumerate, t.ndindex
 
 < a55
-Z = np.arange(9).reshape(3,3)
-for index, value in np.ndenumerate(Z):
+Z = t.arange(9).reshape(3,3)
+for index, value in t.ndenumerate(Z):
     print(index, value)
-for index in np.ndindex(Z.shape):
+for index in t.ndindex(Z.shape):
     print(index, Z[index])
 
 < q56
-Generate a generic 2D Gaussian-like array (★★☆)
+Generate a generic 2D Gaussian-like tensor (★★☆)
 
 < h56
-hint: np.meshgrid, np.exp
+hint: t.meshgrid, t.exp
 
 < a56
-X, Y = np.meshgrid(np.linspace(-1,1,10), np.linspace(-1,1,10))
-D = np.sqrt(X*X+Y*Y)
+X, Y = t.meshgrid(t.linspace(-1,1,10), t.linspace(-1,1,10))
+D = t.sqrt(X*X+Y*Y)
 sigma, mu = 1.0, 0.0
-G = np.exp(-( (D-mu)**2 / ( 2.0 * sigma**2 ) ) )
+G = t.exp(-( (D-mu)**2 / ( 2.0 * sigma**2 ) ) )
 print(G)
 
 < q57
-How to randomly place p elements in a 2D array? (★★☆)
+How to randomly place p elements in a 2D tensor? (★★☆)
 
 < h57
-hint: np.put, np.random.choice
+hint: t.put, t.random.choice
 
 < a57
 # Author: Divakar
 
 n = 10
 p = 3
-Z = np.zeros((n,n))
-np.put(Z, np.random.choice(range(n*n), p, replace=False),1)
+Z = t.zeros((n,n))
+t.put(Z, t.random.choice(range(n*n), p, replace=False),1)
 print(Z)
 
 < q58
@@ -746,7 +769,7 @@ hint: mean(axis=,keepdims=)
 < a58
 # Author: Warren Weckesser
 
-X = np.random.rand(5, 10)
+X = t.random.rand(5, 10)
 
 # Recent versions of numpy
 Y = X - X.mean(axis=1, keepdims=True)
@@ -757,7 +780,7 @@ Y = X - X.mean(axis=1).reshape(-1, 1)
 print(Y)
 
 < q59
-How to sort an array by the nth column? (★★☆)
+How to sort an tensor by the nth column? (★★☆)
 
 < h59
 hint: argsort
@@ -765,12 +788,12 @@ hint: argsort
 < a59
 # Author: Steve Tjoa
 
-Z = np.random.randint(0,10,(3,3))
+Z = t.random.randint(0,10,(3,3))
 print(Z)
 print(Z[Z[:,1].argsort()])
 
 < q60
-How to tell if a given 2D array has null columns? (★★☆)
+How to tell if a given 2D tensor has null columns? (★★☆)
 
 < h60
 hint: any, ~
@@ -779,106 +802,106 @@ hint: any, ~
 # Author: Warren Weckesser
 
 # null : 0 
-Z = np.random.randint(0,3,(3,10))
+Z = t.random.randint(0,3,(3,10))
 print((~Z.any(axis=0)).any())
 
-# null : np.nan
-Z=np.array([
-    [0,1,np.nan],
-    [1,2,np.nan],
-    [4,5,np.nan]
+# null : t.nan
+Z=t.tensor([
+    [0,1,t.nan],
+    [1,2,t.nan],
+    [4,5,t.nan]
 ])
-print(np.isnan(Z).all(axis=0))
+print(t.isnan(Z).all(axis=0))
 
 < q61
-Find the nearest value from a given value in an array (★★☆)
+Find the nearest value from a given value in an tensor (★★☆)
 
 < h61
-hint: np.abs, argmin, flat
+hint: t.abs, argmin, flat
 
 < a61
-Z = np.random.uniform(0,1,10)
+Z = t.random.uniform(0,1,10)
 z = 0.5
-m = Z.flat[np.abs(Z - z).argmin()]
+m = Z.flat[t.abs(Z - z).argmin()]
 print(m)
 
 < q62
-Considering two arrays with shape (1,3) and (3,1), how to compute their sum using an iterator? (★★☆)
+Considering two tensors with shape (1,3) and (3,1), how to compute their sum using an iterator? (★★☆)
 
 < h62
-hint: np.nditer
+hint: t.nditer
 
 < a62
-A = np.arange(3).reshape(3,1)
-B = np.arange(3).reshape(1,3)
-it = np.nditer([A,B,None])
+A = t.arange(3).reshape(3,1)
+B = t.arange(3).reshape(1,3)
+it = t.nditer([A,B,None])
 for x,y,z in it: z[...] = x + y
 print(it.operands[2])
 
 < q63
-Create an array class that has a name attribute (★★☆)
+Create an tensor class that has a name attribute (★★☆)
 
 < h63
 hint: class method
 
 < a63
-class NamedArray(np.ndarray):
-    def __new__(cls, array, name="no name"):
-        obj = np.asarray(array).view(cls)
+class Namedtensor(t.ndtensor):
+    def __new__(cls, tensor, name="no name"):
+        obj = t.astensor(tensor).view(cls)
         obj.name = name
         return obj
-    def __array_finalize__(self, obj):
+    def __tensor_finalize__(self, obj):
         if obj is None: return
         self.name = getattr(obj, 'name', "no name")
 
-Z = NamedArray(np.arange(10), "range_10")
+Z = Namedtensor(t.arange(10), "range_10")
 print (Z.name)
 
 < q64
-Consider a given vector, how to add 1 to each element indexed by a second vector (be careful with repeated indices)? (★★★)
+Consider a given tensor, how to add 1 to each element indexed by a second tensor (be careful with repeated indices)? (★★★)
 
 < h64
-hint: np.bincount | np.add.at
+hint: t.bincount | t.add.at
 
 < a64
 # Author: Brett Olsen
 
-Z = np.ones(10)
-I = np.random.randint(0,len(Z),20)
-Z += np.bincount(I, minlength=len(Z))
+Z = t.ones(10)
+I = t.random.randint(0,len(Z),20)
+Z += t.bincount(I, minlength=len(Z))
 print(Z)
 
 # Another solution
 # Author: Bartosz Telenczuk
-np.add.at(Z, I, 1)
+t.add.at(Z, I, 1)
 print(Z)
 
 < q65
-How to accumulate elements of a vector (X) to an array (F) based on an index list (I)? (★★★)
+How to accumulate elements of a tensor (X) to an tensor (F) based on an index list (I)? (★★★)
 
 < h65
-hint: np.bincount
+hint: t.bincount
 
 < a65
 # Author: Alan G Isaac
 
 X = [1,2,3,4,5,6]
 I = [1,3,9,3,4,1]
-F = np.bincount(I,X)
+F = t.bincount(I,X)
 print(F)
 
 < q66
 Considering a (w,h,3) image of (dtype=ubyte), compute the number of unique colors (★★☆)
 
 < h66
-hint: np.unique
+hint: t.unique
 
 < a66
 # Author: Fisher Wang
 
 w, h = 256, 256
-I = np.random.randint(0, 4, (h, w, 3)).astype(np.ubyte)
-colors = np.unique(I.reshape(-1, 3), axis=0)
+I = t.random.randint(0, 4, (h, w, 3)).astype(t.ubyte)
+colors = t.unique(I.reshape(-1, 3), axis=0)
 n = len(colors)
 print(n)
 
@@ -887,23 +910,23 @@ print(n)
 # https://stackoverflow.com/a/59671950/2836621
 
 w, h = 256, 256
-I = np.random.randint(0,4,(h,w,3), dtype=np.uint8)
+I = t.random.randint(0,4,(h,w,3), dtype=t.uint8)
 
 # View each pixel as a single 24-bit integer, rather than three 8-bit bytes
-I24 = np.dot(I.astype(np.uint32),[1,256,65536])
+I24 = t.dot(I.astype(t.uint32),[1,256,65536])
 
 # Count unique colours
-n = len(np.unique(I24))
+n = len(t.unique(I24))
 print(n)
 
 < q67
-Considering a four dimensions array, how to get sum over the last two axis at once? (★★★)
+Considering a four dimensions tensor, how to get sum over the last two axis at once? (★★★)
 
 < h67
 hint: sum(axis=(-2,-1))
 
 < a67
-A = np.random.randint(0,10,(3,4,3,4))
+A = t.random.randint(0,10,(3,4,3,4))
 # solution by passing a tuple of axes (introduced in numpy 1.7.0)
 sum = A.sum(axis=(-2,-1))
 print(sum)
@@ -913,18 +936,18 @@ sum = A.reshape(A.shape[:-2] + (-1,)).sum(axis=-1)
 print(sum)
 
 < q68
-Considering a one-dimensional vector D, how to compute means of subsets of D using a vector S of same size describing subset  indices? (★★★)
+Considering a one-dimensional tensor D, how to compute means of subsets of D using a tensor S of same size describing subset  indices? (★★★)
 
 < h68
-hint: np.bincount
+hint: t.bincount
 
 < a68
 # Author: Jaime Fernández del Río
 
-D = np.random.uniform(0,1,100)
-S = np.random.randint(0,10,100)
-D_sums = np.bincount(S, weights=D)
-D_counts = np.bincount(S)
+D = t.random.uniform(0,1,100)
+S = t.random.randint(0,10,100)
+D_sums = t.bincount(S, weights=D)
+D_counts = t.bincount(S)
 D_means = D_sums / D_counts
 print(D_means)
 
@@ -936,59 +959,59 @@ print(pd.Series(D).groupby(S).mean())
 How to get the diagonal of a dot product? (★★★)
 
 < h69
-hint: np.diag
+hint: t.diag
 
 < a69
 # Author: Mathieu Blondel
 
-A = np.random.uniform(0,1,(5,5))
-B = np.random.uniform(0,1,(5,5))
+A = t.random.uniform(0,1,(5,5))
+B = t.random.uniform(0,1,(5,5))
 
 # Slow version
-np.diag(np.dot(A, B))
+t.diag(t.dot(A, B))
 
 # Fast version
-np.sum(A * B.T, axis=1)
+t.sum(A * B.T, axis=1)
 
 # Faster version
-np.einsum("ij,ji->i", A, B)
+t.einsum("ij,ji->i", A, B)
 
 < q70
-Consider the vector [1, 2, 3, 4, 5], how to build a new vector with 3 consecutive zeros interleaved between each value? (★★★)
+Consider the tensor [1, 2, 3, 4, 5], how to build a new tensor with 3 consecutive zeros interleaved between each value? (★★★)
 
 < h70
-hint: array[::4]
+hint: tensor[::4]
 
 < a70
 # Author: Warren Weckesser
 
-Z = np.array([1,2,3,4,5])
+Z = t.tensor([1,2,3,4,5])
 nz = 3
-Z0 = np.zeros(len(Z) + (len(Z)-1)*(nz))
+Z0 = t.zeros(len(Z) + (len(Z)-1)*(nz))
 Z0[::nz+1] = Z
 print(Z0)
 
 < q71
-Consider an array of dimension (5,5,3), how to mulitply it by an array with dimensions (5,5)? (★★★)
+Consider an tensor of dimension (5,5,3), how to mulitply it by an tensor with dimensions (5,5)? (★★★)
 
 < h71
-hint: array[:, :, None]
+hint: tensor[:, :, None]
 
 < a71
-A = np.ones((5,5,3))
-B = 2*np.ones((5,5))
+A = t.ones((5,5,3))
+B = 2*t.ones((5,5))
 print(A * B[:,:,None])
 
 < q72
-How to swap two rows of an array? (★★★)
+How to swap two rows of an tensor? (★★★)
 
 < h72
-hint: array[[]] = array[[]]
+hint: tensor[[]] = tensor[[]]
 
 < a72
 # Author: Eelco Hoogendoorn
 
-A = np.arange(25).reshape(5,5)
+A = t.arange(25).reshape(5,5)
 A[[0,1]] = A[[1,0]]
 print(A)
 
@@ -996,46 +1019,46 @@ print(A)
 Consider a set of 10 triplets describing 10 triangles (with shared vertices), find the set of unique line segments composing all the  triangles (★★★)
 
 < h73
-hint: repeat, np.roll, np.sort, view, np.unique
+hint: repeat, t.roll, t.sort, view, t.unique
 
 < a73
 # Author: Nicolas P. Rougier
 
-faces = np.random.randint(0,100,(10,3))
-F = np.roll(faces.repeat(2,axis=1),-1,axis=1)
+faces = t.random.randint(0,100,(10,3))
+F = t.roll(faces.repeat(2,axis=1),-1,axis=1)
 F = F.reshape(len(F)*3,2)
-F = np.sort(F,axis=1)
+F = t.sort(F,axis=1)
 G = F.view( dtype=[('p0',F.dtype),('p1',F.dtype)] )
-G = np.unique(G)
+G = t.unique(G)
 print(G)
 
 < q74
-Given a sorted array C that corresponds to a bincount, how to produce an array A such that np.bincount(A) == C? (★★★)
+Given a sorted tensor C that corresponds to a bincount, how to produce an tensor A such that t.bincount(A) == C? (★★★)
 
 < h74
-hint: np.repeat
+hint: t.repeat
 
 < a74
 # Author: Jaime Fernández del Río
 
-C = np.bincount([1,1,2,3,4,4,6])
-A = np.repeat(np.arange(len(C)), C)
+C = t.bincount([1,1,2,3,4,4,6])
+A = t.repeat(t.arange(len(C)), C)
 print(A)
 
 < q75
-How to compute averages using a sliding window over an array? (★★★)
+How to compute averages using a sliding window over an tensor? (★★★)
 
 < h75
-hint: np.cumsum, from numpy.lib.stride_tricks import sliding_window_view (np>=1.20.0)
+hint: t.cumsum, from numpy.lib.stride_tricks import sliding_window_view (np>=1.20.0)
 
 < a75
 # Author: Jaime Fernández del Río
 
 def moving_average(a, n=3) :
-    ret = np.cumsum(a, dtype=float)
+    ret = t.cumsum(a, dtype=float)
     ret[n:] = ret[n:] - ret[:-n]
     return ret[n - 1:] / n
-Z = np.arange(20)
+Z = t.arange(20)
 print(moving_average(Z, n=3))
 
 # Author: Jeff Luo (@Jeff1999)
@@ -1043,11 +1066,11 @@ print(moving_average(Z, n=3))
 
 from numpy.lib.stride_tricks import sliding_window_view
 
-Z = np.arange(20)
+Z = t.arange(20)
 print(sliding_window_view(Z, window_shape=3).mean(axis=-1))
 
 < q76
-Consider a one-dimensional array Z, build a two-dimensional array whose first row is (Z[0],Z[1],Z[2]) and each subsequent row is  shifted by 1 (last row should be (Z[-3],Z[-2],Z[-1]) (★★★)
+Consider a one-dimensional tensor Z, build a two-dimensional tensor whose first row is (Z[0],Z[1],Z[2]) and each subsequent row is  shifted by 1 (last row should be (Z[-3],Z[-2],Z[-1]) (★★★)
 
 < h76
 hint: from numpy.lib import stride_tricks, from numpy.lib.stride_tricks import sliding_window_view (np>=1.20.0)
@@ -1060,28 +1083,28 @@ def rolling(a, window):
     shape = (a.size - window + 1, window)
     strides = (a.strides[0], a.strides[0])
     return stride_tricks.as_strided(a, shape=shape, strides=strides)
-Z = rolling(np.arange(10), 3)
+Z = rolling(t.arange(10), 3)
 print(Z)
 
 # Author: Jeff Luo (@Jeff1999)
 
-Z = np.arange(10)
+Z = t.arange(10)
 print(sliding_window_view(Z, window_shape=3))
 
 < q77
 How to negate a boolean, or to change the sign of a float inplace? (★★★)
 
 < h77
-hint: np.logical_not, np.negative
+hint: t.logical_not, t.negative
 
 < a77
 # Author: Nathaniel J. Smith
 
-Z = np.random.randint(0,2,100)
-np.logical_not(Z, out=Z)
+Z = t.random.randint(0,2,100)
+t.logical_not(Z, out=Z)
 
-Z = np.random.uniform(-1.0,1.0,100)
-np.negative(Z, out=Z)
+Z = t.random.uniform(-1.0,1.0,100)
+t.negative(Z, out=Z)
 
 < q78
 Consider 2 sets of points P0,P1 describing lines (2d) and a point p, how to compute distance from p to each line i (P0[i],P1[i])? (★★★)
@@ -1096,11 +1119,11 @@ def distance(P0, P1, p):
     U = -((P0[:,0]-p[...,0])*T[:,0] + (P0[:,1]-p[...,1])*T[:,1]) / L
     U = U.reshape(len(U),1)
     D = P0 + U*T - p
-    return np.sqrt((D**2).sum(axis=1))
+    return t.sqrt((D**2).sum(axis=1))
 
-P0 = np.random.uniform(-10,10,(10,2))
-P1 = np.random.uniform(-10,10,(10,2))
-p  = np.random.uniform(-10,10,( 1,2))
+P0 = t.random.uniform(-10,10,(10,2))
+P1 = t.random.uniform(-10,10,(10,2))
+p  = t.random.uniform(-10,10,( 1,2))
 print(distance(P0, P1, p))
 
 < q79
@@ -1113,13 +1136,13 @@ No hints provided...
 # Author: Italmassov Kuanysh
 
 # based on distance function from previous question
-P0 = np.random.uniform(-10, 10, (10,2))
-P1 = np.random.uniform(-10,10,(10,2))
-p = np.random.uniform(-10, 10, (10,2))
-print(np.array([distance(P0,P1,p_i) for p_i in p]))
+P0 = t.random.uniform(-10, 10, (10,2))
+P1 = t.random.uniform(-10,10,(10,2))
+p = t.random.uniform(-10, 10, (10,2))
+print(t.tensor([distance(P0,P1,p_i) for p_i in p]))
 
 < q80
-Consider an arbitrary array, write a function that extract a subpart with a fixed shape and centered on a given element (pad with a `fill` value when necessary) (★★★)
+Consider an arbitrary tensor, write a function that extract a subpart with a fixed shape and centered on a given element (pad with a `fill` value when necessary) (★★★)
 
 < h80
 hint: minimum maximum
@@ -1127,25 +1150,25 @@ hint: minimum maximum
 < a80
 # Author: Nicolas Rougier
 
-Z = np.random.randint(0,10,(10,10))
+Z = t.random.randint(0,10,(10,10))
 shape = (5,5)
 fill  = 0
 position = (1,1)
 
-R = np.ones(shape, dtype=Z.dtype)*fill
-P  = np.array(list(position)).astype(int)
-Rs = np.array(list(R.shape)).astype(int)
-Zs = np.array(list(Z.shape)).astype(int)
+R = t.ones(shape, dtype=Z.dtype)*fill
+P  = t.tensor(list(position)).astype(int)
+Rs = t.tensor(list(R.shape)).astype(int)
+Zs = t.tensor(list(Z.shape)).astype(int)
 
-R_start = np.zeros((len(shape),)).astype(int)
-R_stop  = np.array(list(shape)).astype(int)
+R_start = t.zeros((len(shape),)).astype(int)
+R_stop  = t.tensor(list(shape)).astype(int)
 Z_start = (P-Rs//2)
 Z_stop  = (P+Rs//2)+Rs%2
 
-R_start = (R_start - np.minimum(Z_start,0)).tolist()
-Z_start = (np.maximum(Z_start,0)).tolist()
-R_stop = np.maximum(R_start, (R_stop - np.maximum(Z_stop-Zs,0))).tolist()
-Z_stop = (np.minimum(Z_stop,Zs)).tolist()
+R_start = (R_start - t.minimum(Z_start,0)).tolist()
+Z_start = (t.maximum(Z_start,0)).tolist()
+R_stop = t.maximum(R_start, (R_stop - t.maximum(Z_stop-Zs,0))).tolist()
+Z_stop = (t.minimum(Z_stop,Zs)).tolist()
 
 r = [slice(start,stop) for start,stop in zip(R_start,R_stop)]
 z = [slice(start,stop) for start,stop in zip(Z_start,Z_stop)]
@@ -1154,7 +1177,7 @@ print(Z)
 print(R)
 
 < q81
-Consider an array Z = [1,2,3,4,5,6,7,8,9,10,11,12,13,14], how to generate an array R = [[1,2,3,4], [2,3,4,5], [3,4,5,6], ..., [11,12,13,14]]? (★★★)
+Consider an tensor Z = [1,2,3,4,5,6,7,8,9,10,11,12,13,14], how to generate an tensor R = [[1,2,3,4], [2,3,4,5], [3,4,5,6], ..., [11,12,13,14]]? (★★★)
 
 < h81
 hint: stride_tricks.as_strided, from numpy.lib.stride_tricks import sliding_window_view (np>=1.20.0)
@@ -1162,44 +1185,44 @@ hint: stride_tricks.as_strided, from numpy.lib.stride_tricks import sliding_wind
 < a81
 # Author: Stefan van der Walt
 
-Z = np.arange(1,15,dtype=np.uint32)
+Z = t.arange(1,15,dtype=t.uint32)
 R = stride_tricks.as_strided(Z,(11,4),(4,4))
 print(R)
 
 # Author: Jeff Luo (@Jeff1999)
 
-Z = np.arange(1, 15, dtype=np.uint32)
+Z = t.arange(1, 15, dtype=t.uint32)
 print(sliding_window_view(Z, window_shape=4))
 
 < q82
 Compute a matrix rank (★★★)
 
 < h82
-hint: np.linalg.svd, np.linalg.matrix_rank
+hint: t.linalg.svd, t.linalg.matrix_rank
 
 < a82
 # Author: Stefan van der Walt
 
-Z = np.random.uniform(0,1,(10,10))
-U, S, V = np.linalg.svd(Z) # Singular Value Decomposition
-rank = np.sum(S > 1e-10)
+Z = t.random.uniform(0,1,(10,10))
+U, S, V = t.linalg.svd(Z) # Singular Value Decomposition
+rank = t.sum(S > 1e-10)
 print(rank)
 
 # alternative solution:
 # Author: Jeff Luo (@Jeff1999)
 
-rank = np.linalg.matrix_rank(Z)
+rank = t.linalg.matrix_rank(Z)
 print(rank)
 
 < q83
-How to find the most frequent value in an array?
+How to find the most frequent value in an tensor?
 
 < h83
-hint: np.bincount, argmax
+hint: t.bincount, argmax
 
 < a83
-Z = np.random.randint(0,10,50)
-print(np.bincount(Z).argmax())
+Z = t.random.randint(0,10,50)
+print(t.bincount(Z).argmax())
 
 < q84
 Extract all the contiguous 3x3 blocks from a random 10x10 matrix (★★★)
@@ -1210,7 +1233,7 @@ hint: stride_tricks.as_strided, from numpy.lib.stride_tricks import sliding_wind
 < a84
 # Author: Chris Barker
 
-Z = np.random.randint(0,5,(10,10))
+Z = t.random.randint(0,5,(10,10))
 n = 3
 i = 1 + (Z.shape[0]-3)
 j = 1 + (Z.shape[1]-3)
@@ -1219,85 +1242,85 @@ print(C)
 
 # Author: Jeff Luo (@Jeff1999)
 
-Z = np.random.randint(0,5,(10,10))
+Z = t.random.randint(0,5,(10,10))
 print(sliding_window_view(Z, window_shape=(3, 3)))
 
 < q85
-Create a 2D array subclass such that Z[i,j] == Z[j,i] (★★★)
+Create a 2D tensor subclass such that Z[i,j] == Z[j,i] (★★★)
 
 < h85
 hint: class method
 
 < a85
 # Author: Eric O. Lebigot
-# Note: only works for 2d array and value setting using indices
+# Note: only works for 2d tensor and value setting using indices
 
-class Symetric(np.ndarray):
+class Symetric(t.ndtensor):
     def __setitem__(self, index, value):
         i,j = index
         super(Symetric, self).__setitem__((i,j), value)
         super(Symetric, self).__setitem__((j,i), value)
 
 def symetric(Z):
-    return np.asarray(Z + Z.T - np.diag(Z.diagonal())).view(Symetric)
+    return t.astensor(Z + Z.T - t.diag(Z.diagonal())).view(Symetric)
 
-S = symetric(np.random.randint(0,10,(5,5)))
+S = symetric(t.random.randint(0,10,(5,5)))
 S[2,3] = 42
 print(S)
 
 < q86
-Consider a set of p matrices wich shape (n,n) and a set of p vectors with shape (n,1). How to compute the sum of of the p matrix products at once? (result has shape (n,1)) (★★★)
+Consider a set of p matrices wich shape (n,n) and a set of p tensors with shape (n,1). How to compute the sum of of the p matrix products at once? (result has shape (n,1)) (★★★)
 
 < h86
-hint: np.tensordot
+hint: t.tensordot
 
 < a86
 # Author: Stefan van der Walt
 
 p, n = 10, 20
-M = np.ones((p,n,n))
-V = np.ones((p,n,1))
-S = np.tensordot(M, V, axes=[[0, 2], [0, 1]])
+M = t.ones((p,n,n))
+V = t.ones((p,n,1))
+S = t.tensordot(M, V, axes=[[0, 2], [0, 1]])
 print(S)
 
 # It works, because:
 # M is (p,n,n)
 # V is (p,n,1)
 # Thus, summing over the paired axes 0 and 0 (of M and V independently),
-# and 2 and 1, to remain with a (n,1) vector.
+# and 2 and 1, to remain with a (n,1) tensor.
 
 < q87
-Consider a 16x16 array, how to get the block-sum (block size is 4x4)? (★★★)
+Consider a 16x16 tensor, how to get the block-sum (block size is 4x4)? (★★★)
 
 < h87
-hint: np.add.reduceat, from numpy.lib.stride_tricks import sliding_window_view (np>=1.20.0)
+hint: t.add.reduceat, from numpy.lib.stride_tricks import sliding_window_view (np>=1.20.0)
 
 < a87
 # Author: Robert Kern
 
-Z = np.ones((16,16))
+Z = t.ones((16,16))
 k = 4
-S = np.add.reduceat(np.add.reduceat(Z, np.arange(0, Z.shape[0], k), axis=0),
-                                       np.arange(0, Z.shape[1], k), axis=1)
+S = t.add.reduceat(t.add.reduceat(Z, t.arange(0, Z.shape[0], k), axis=0),
+                                       t.arange(0, Z.shape[1], k), axis=1)
 print(S)
 
 # alternative solution:
 # Author: Sebastian Wallkötter (@FirefoxMetzger)
 
-Z = np.ones((16,16))
+Z = t.ones((16,16))
 k = 4
 
-windows = np.lib.stride_tricks.sliding_window_view(Z, (k, k))
+windows = t.lib.stride_tricks.sliding_window_view(Z, (k, k))
 S = windows[::k, ::k, ...].sum(axis=(-2, -1))
 
 # Author: Jeff Luo (@Jeff1999)
 
-Z = np.ones((16, 16))
+Z = t.ones((16, 16))
 k = 4
 print(sliding_window_view(Z, window_shape=(k, k))[::k, ::k].sum(axis=(-2, -1)))
 
 < q88
-How to implement the Game of Life using numpy arrays? (★★★)
+How to implement the Game of Life using numpy tensors? (★★★)
 
 < h88
 No hints provided...
@@ -1318,93 +1341,93 @@ def iterate(Z):
     Z[1:-1,1:-1][birth | survive] = 1
     return Z
 
-Z = np.random.randint(0,2,(50,50))
+Z = t.random.randint(0,2,(50,50))
 for i in range(100): Z = iterate(Z)
 print(Z)
 
 < q89
-How to get the n largest values of an array (★★★)
+How to get the n largest values of an tensor (★★★)
 
 < h89
-hint: np.argsort | np.argpartition
+hint: t.argsort | t.argpartition
 
 < a89
-Z = np.arange(10000)
-np.random.shuffle(Z)
+Z = t.arange(10000)
+t.random.shuffle(Z)
 n = 5
 
 # Slow
-print (Z[np.argsort(Z)[-n:]])
+print (Z[t.argsort(Z)[-n:]])
 
 # Fast
-print (Z[np.argpartition(-Z,n)[:n]])
+print (Z[t.argpartition(-Z,n)[:n]])
 
 < q90
-Given an arbitrary number of vectors, build the cartesian product (every combinations of every item) (★★★)
+Given an arbitrary number of tensors, build the cartesian product (every combinations of every item) (★★★)
 
 < h90
-hint: np.indices
+hint: t.indices
 
 < a90
 # Author: Stefan Van der Walt
 
-def cartesian(arrays):
-    arrays = [np.asarray(a) for a in arrays]
-    shape = (len(x) for x in arrays)
+def cartesian(tensors):
+    tensors = [t.astensor(a) for a in tensors]
+    shape = (len(x) for x in tensors)
 
-    ix = np.indices(shape, dtype=int)
-    ix = ix.reshape(len(arrays), -1).T
+    ix = t.indices(shape, dtype=int)
+    ix = ix.reshape(len(tensors), -1).T
 
-    for n, arr in enumerate(arrays):
-        ix[:, n] = arrays[n][ix[:, n]]
+    for n, arr in enumerate(tensors):
+        ix[:, n] = tensors[n][ix[:, n]]
 
     return ix
 
 print (cartesian(([1, 2, 3], [4, 5], [6, 7])))
 
 < q91
-How to create a record array from a regular array? (★★★)
+How to create a record tensor from a regular tensor? (★★★)
 
 < h91
-hint: np.core.records.fromarrays
+hint: t.core.records.fromtensors
 
 < a91
-Z = np.array([("Hello", 2.5, 3),
+Z = t.tensor([("Hello", 2.5, 3),
               ("World", 3.6, 2)])
-R = np.core.records.fromarrays(Z.T,
+R = t.core.records.fromtensors(Z.T,
                                names='col1, col2, col3',
                                formats = 'S8, f8, i8')
 print(R)
 
 < q92
-Consider a large vector Z, compute Z to the power of 3 using 3 different methods (★★★)
+Consider a large tensor Z, compute Z to the power of 3 using 3 different methods (★★★)
 
 < h92
-hint: np.power, *, np.einsum
+hint: t.power, *, t.einsum
 
 < a92
 # Author: Ryan G.
 
-x = np.random.rand(int(5e7))
+x = t.random.rand(int(5e7))
 
-%timeit np.power(x,3)
+%timeit t.power(x,3)
 %timeit x*x*x
-%timeit np.einsum('i,i,i->i',x,x,x)
+%timeit t.einsum('i,i,i->i',x,x,x)
 
 < q93
-Consider two arrays A and B of shape (8,3) and (2,2). How to find rows of A that contain elements of each row of B regardless of the order of the elements in B? (★★★)
+Consider two tensors A and B of shape (8,3) and (2,2). How to find rows of A that contain elements of each row of B regardless of the order of the elements in B? (★★★)
 
 < h93
-hint: np.where
+hint: t.where
 
 < a93
 # Author: Gabe Schwartz
 
-A = np.random.randint(0,5,(8,3))
-B = np.random.randint(0,5,(2,2))
+A = t.random.randint(0,5,(8,3))
+B = t.random.randint(0,5,(2,2))
 
-C = (A[..., np.newaxis, np.newaxis] == B)
-rows = np.where(C.any((3,1)).all(1))[0]
+C = (A[..., t.newaxis, t.newaxis] == B)
+rows = t.where(C.any((3,1)).all(1))[0]
 print(rows)
 
 < q94
@@ -1416,122 +1439,122 @@ No hints provided...
 < a94
 # Author: Robert Kern
 
-Z = np.random.randint(0,5,(10,3))
+Z = t.random.randint(0,5,(10,3))
 print(Z)
-# solution for arrays of all dtypes (including string arrays and record arrays)
-E = np.all(Z[:,1:] == Z[:,:-1], axis=1)
+# solution for tensors of all dtypes (including string tensors and record tensors)
+E = t.all(Z[:,1:] == Z[:,:-1], axis=1)
 U = Z[~E]
 print(U)
-# soluiton for numerical arrays only, will work for any number of columns in Z
+# soluiton for numerical tensors only, will work for any number of columns in Z
 U = Z[Z.max(axis=1) != Z.min(axis=1),:]
 print(U)
 
 < q95
-Convert a vector of ints into a matrix binary representation (★★★)
+Convert a tensor of ints into a matrix binary representation (★★★)
 
 < h95
-hint: np.unpackbits
+hint: t.unpackbits
 
 < a95
 # Author: Warren Weckesser
 
-I = np.array([0, 1, 2, 3, 15, 16, 32, 64, 128])
-B = ((I.reshape(-1,1) & (2**np.arange(8))) != 0).astype(int)
+I = t.tensor([0, 1, 2, 3, 15, 16, 32, 64, 128])
+B = ((I.reshape(-1,1) & (2**t.arange(8))) != 0).astype(int)
 print(B[:,::-1])
 
 # Author: Daniel T. McDonald
 
-I = np.array([0, 1, 2, 3, 15, 16, 32, 64, 128], dtype=np.uint8)
-print(np.unpackbits(I[:, np.newaxis], axis=1))
+I = t.tensor([0, 1, 2, 3, 15, 16, 32, 64, 128], dtype=t.uint8)
+print(t.unpackbits(I[:, t.newaxis], axis=1))
 
 < q96
-Given a two dimensional array, how to extract unique rows? (★★★)
+Given a two dimensional tensor, how to extract unique rows? (★★★)
 
 < h96
-hint: np.ascontiguousarray | np.unique
+hint: t.ascontiguoustensor | t.unique
 
 < a96
 # Author: Jaime Fernández del Río
 
-Z = np.random.randint(0,2,(6,3))
-T = np.ascontiguousarray(Z).view(np.dtype((np.void, Z.dtype.itemsize * Z.shape[1])))
-_, idx = np.unique(T, return_index=True)
+Z = t.random.randint(0,2,(6,3))
+T = t.ascontiguoustensor(Z).view(t.dtype((t.void, Z.dtype.itemsize * Z.shape[1])))
+_, idx = t.unique(T, return_index=True)
 uZ = Z[idx]
 print(uZ)
 
 # Author: Andreas Kouzelis
 # NumPy >= 1.13
-uZ = np.unique(Z, axis=0)
+uZ = t.unique(Z, axis=0)
 print(uZ)
 
 < q97
-Considering 2 vectors A & B, write the einsum equivalent of inner, outer, sum, and mul function (★★★)
+Considering 2 tensors A & B, write the einsum equivalent of inner, outer, sum, and mul function (★★★)
 
 < h97
-hint: np.einsum
+hint: t.einsum
 
 < a97
 # Author: Alex Riley
 # Make sure to read: http://ajcr.net/Basic-guide-to-einsum/
 
-A = np.random.uniform(0,1,10)
-B = np.random.uniform(0,1,10)
+A = t.random.uniform(0,1,10)
+B = t.random.uniform(0,1,10)
 
-np.einsum('i->', A)       # np.sum(A)
-np.einsum('i,i->i', A, B) # A * B
-np.einsum('i,i', A, B)    # np.inner(A, B)
-np.einsum('i,j->ij', A, B)    # np.outer(A, B)
+t.einsum('i->', A)       # t.sum(A)
+t.einsum('i,i->i', A, B) # A * B
+t.einsum('i,i', A, B)    # t.inner(A, B)
+t.einsum('i,j->ij', A, B)    # t.outer(A, B)
 
 < q98
-Considering a path described by two vectors (X,Y), how to sample it using equidistant samples (★★★)?
+Considering a path described by two tensors (X,Y), how to sample it using equidistant samples (★★★)?
 
 < h98
-hint: np.cumsum, np.interp
+hint: t.cumsum, t.interp
 
 < a98
 # Author: Bas Swinckels
 
-phi = np.arange(0, 10*np.pi, 0.1)
+phi = t.arange(0, 10*t.pi, 0.1)
 a = 1
-x = a*phi*np.cos(phi)
-y = a*phi*np.sin(phi)
+x = a*phi*t.cos(phi)
+y = a*phi*t.sin(phi)
 
-dr = (np.diff(x)**2 + np.diff(y)**2)**.5 # segment lengths
-r = np.zeros_like(x)
-r[1:] = np.cumsum(dr)                # integrate path
-r_int = np.linspace(0, r.max(), 200) # regular spaced path
-x_int = np.interp(r_int, r, x)       # integrate path
-y_int = np.interp(r_int, r, y)
+dr = (t.diff(x)**2 + t.diff(y)**2)**.5 # segment lengths
+r = t.zeros_like(x)
+r[1:] = t.cumsum(dr)                # integrate path
+r_int = t.linspace(0, r.max(), 200) # regular spaced path
+x_int = t.interp(r_int, r, x)       # integrate path
+y_int = t.interp(r_int, r, y)
 
 < q99
-Given an integer n and a 2D array X, select from X the rows which can be interpreted as draws from a multinomial distribution with n degrees, i.e., the rows which only contain integers and which sum to n. (★★★)
+Given an integer n and a 2D tensor X, select from X the rows which can be interpreted as draws from a multinomial distribution with n degrees, i.e., the rows which only contain integers and which sum to n. (★★★)
 
 < h99
-hint: np.logical_and.reduce, np.mod
+hint: t.logical_and.reduce, t.mod
 
 < a99
 # Author: Evgeni Burovski
 
-X = np.asarray([[1.0, 0.0, 3.0, 8.0],
+X = t.astensor([[1.0, 0.0, 3.0, 8.0],
                 [2.0, 0.0, 1.0, 1.0],
                 [1.5, 2.5, 1.0, 0.0]])
 n = 4
-M = np.logical_and.reduce(np.mod(X, 1) == 0, axis=-1)
+M = t.logical_and.reduce(t.mod(X, 1) == 0, axis=-1)
 M &= (X.sum(axis=-1) == n)
 print(X[M])
 
 < q100
-Compute bootstrapped 95% confidence intervals for the mean of a 1D array X (i.e., resample the elements of an array with replacement N times, compute the mean of each sample, and then compute percentiles over the means). (★★★)
+Compute bootstrapped 95% confidence intervals for the mean of a 1D tensor X (i.e., resample the elements of an tensor with replacement N times, compute the mean of each sample, and then compute percentiles over the means). (★★★)
 
 < h100
-hint: np.percentile
+hint: t.percentile
 
 < a100
 # Author: Jessica B. Hamrick
 
-X = np.random.randn(100) # random 1D array
+X = t.random.randn(100) # random 1D tensor
 N = 1000 # number of bootstrap samples
-idx = np.random.randint(0, X.size, (N, X.size))
+idx = t.random.randint(0, X.size, (N, X.size))
 means = X[idx].mean(axis=1)
-confint = np.percentile(means, [2.5, 97.5])
+confint = t.percentile(means, [2.5, 97.5])
 print(confint)

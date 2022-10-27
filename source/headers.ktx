@@ -1,10 +1,10 @@
 < header
-# 100 numpy exercises
+# 100 pytorch exercises
 
-This is a collection of exercises that have been collected in the numpy mailing list, on stack overflow
-and in the numpy documentation. The goal of this collection is to offer a quick reference for both old
-and new users but also to provide a set of exercises for those who teach.
-
+This is a port of the original 100 numpy exercises <https://github.com/rougier/numpy-100> by @rougier
+to the Pytorch library. The original is a collection of exercises that were collected from the numpy
+mailing list, on stack overflow and in the numpy documentation. The goal of this collection is to offer
+a quick reference for both old and new users but also to provide a set of exercises for those who teach.
 
 If you find an error or think you've a better way to solve some of them, feel
 free to open an issue at <https://github.com/rougier/numpy-100>.

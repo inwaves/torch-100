@@ -19,17 +19,17 @@ File automatically generated. See the documentation to update questions/answers/
 
 #### 2. Print the numpy version and the configuration (★☆☆)
 
-#### 3. Create a null vector of size 10 (★☆☆)
+#### 3. Create a null tensor of size 10 (★☆☆)
 
 #### 4. How to find the memory size of any array (★☆☆)
 
 #### 5. How to get the documentation of the numpy add function from the command line? (★☆☆)
 
-#### 6. Create a null vector of size 10 but the fifth value which is 1 (★☆☆)
+#### 6. Create a null tensor of size 10 but the fifth value which is 1 (★☆☆)
 
-#### 7. Create a vector with values ranging from 10 to 49 (★☆☆)
+#### 7. Create a tensor with values ranging from 10 to 49 (★☆☆)
 
-#### 8. Reverse a vector (first element becomes last) (★☆☆)
+#### 8. Reverse a tensor (first element becomes last) (★☆☆)
 
 #### 9. Create a 3x3 matrix with values ranging from 0 to 8 (★☆☆)
 
@@ -41,7 +41,7 @@ File automatically generated. See the documentation to update questions/answers/
 
 #### 13. Create a 10x10 array with random values and find the minimum and maximum values (★☆☆)
 
-#### 14. Create a random vector of size 30 and find the mean value (★☆☆)
+#### 14. Create a random tensor of size 30 and find the mean value (★☆☆)
 
 #### 15. Create a 2d array with 1 on the border and 0 inside (★☆☆)
 
@@ -82,7 +82,7 @@ from numpy import *
 print(sum(range(5),-1))
 ```
 
-#### 27. Consider an integer vector Z, which of these expressions are legal? (★☆☆)
+#### 27. Consider an integer tensor Z, which of these expressions are legal? (★☆☆)
 ```python
 Z**Z
 2 << Z >> 2
@@ -122,9 +122,9 @@ np.sqrt(-1) == np.emath.sqrt(-1)
 
 #### 38. Consider a generator function that generates 10 integers and use it to build an array (★☆☆)
 
-#### 39. Create a vector of size 10 with values ranging from 0 to 1, both excluded (★★☆)
+#### 39. Create a tensor of size 10 with values ranging from 0 to 1, both excluded (★★☆)
 
-#### 40. Create a random vector of size 10 and sort it (★★☆)
+#### 40. Create a random tensor of size 10 and sort it (★★☆)
 
 #### 41. How to sum a small array faster than np.sum? (★★☆)
 
@@ -134,7 +134,7 @@ np.sqrt(-1) == np.emath.sqrt(-1)
 
 #### 44. Consider a random 10x2 matrix representing cartesian coordinates, convert them to polar coordinates (★★☆)
 
-#### 45. Create random vector of size 10 and replace the maximum value by 0 (★★☆)
+#### 45. Create random tensor of size 10 and replace the maximum value by 0 (★★☆)
 
 #### 46. Create a structured array with `x` and `y` coordinates covering the [0,1]x[0,1] area (★★☆)
 
@@ -144,11 +144,11 @@ np.sqrt(-1) == np.emath.sqrt(-1)
 
 #### 49. How to print all the values of an array? (★★☆)
 
-#### 50. How to find the closest value (to a given scalar) in a vector? (★★☆)
+#### 50. How to find the closest value (to a given scalar) in a tensor? (★★☆)
 
 #### 51. Create a structured array representing a position (x,y) and a color (r,g,b) (★★☆)
 
-#### 52. Consider a random vector with shape (100,2) representing coordinates, find point by point distances (★★☆)
+#### 52. Consider a random tensor with shape (100,2) representing coordinates, find point by point distances (★★☆)
 
 #### 53. How to convert a float (32 bits) array into an integer (32 bits) in place?
 
@@ -177,19 +177,19 @@ np.sqrt(-1) == np.emath.sqrt(-1)
 
 #### 63. Create an array class that has a name attribute (★★☆)
 
-#### 64. Consider a given vector, how to add 1 to each element indexed by a second vector (be careful with repeated indices)? (★★★)
+#### 64. Consider a given tensor, how to add 1 to each element indexed by a second tensor (be careful with repeated indices)? (★★★)
 
-#### 65. How to accumulate elements of a vector (X) to an array (F) based on an index list (I)? (★★★)
+#### 65. How to accumulate elements of a tensor (X) to an array (F) based on an index list (I)? (★★★)
 
 #### 66. Considering a (w,h,3) image of (dtype=ubyte), compute the number of unique colors (★★☆)
 
 #### 67. Considering a four dimensions array, how to get sum over the last two axis at once? (★★★)
 
-#### 68. Considering a one-dimensional vector D, how to compute means of subsets of D using a vector S of same size describing subset  indices? (★★★)
+#### 68. Considering a one-dimensional tensor D, how to compute means of subsets of D using a tensor S of same size describing subset  indices? (★★★)
 
 #### 69. How to get the diagonal of a dot product? (★★★)
 
-#### 70. Consider the vector [1, 2, 3, 4, 5], how to build a new vector with 3 consecutive zeros interleaved between each value? (★★★)
+#### 70. Consider the tensor [1, 2, 3, 4, 5], how to build a new tensor with 3 consecutive zeros interleaved between each value? (★★★)
 
 #### 71. Consider an array of dimension (5,5,3), how to mulitply it by an array with dimensions (5,5)? (★★★)
 
@@ -221,7 +221,7 @@ np.sqrt(-1) == np.emath.sqrt(-1)
 
 #### 85. Create a 2D array subclass such that Z[i,j] == Z[j,i] (★★★)
 
-#### 86. Consider a set of p matrices wich shape (n,n) and a set of p vectors with shape (n,1). How to compute the sum of of the p matrix products at once? (result has shape (n,1)) (★★★)
+#### 86. Consider a set of p matrices wich shape (n,n) and a set of p tensors with shape (n,1). How to compute the sum of of the p matrix products at once? (result has shape (n,1)) (★★★)
 
 #### 87. Consider a 16x16 array, how to get the block-sum (block size is 4x4)? (★★★)
 
@@ -229,23 +229,23 @@ np.sqrt(-1) == np.emath.sqrt(-1)
 
 #### 89. How to get the n largest values of an array (★★★)
 
-#### 90. Given an arbitrary number of vectors, build the cartesian product (every combinations of every item) (★★★)
+#### 90. Given an arbitrary number of tensors, build the cartesian product (every combinations of every item) (★★★)
 
 #### 91. How to create a record array from a regular array? (★★★)
 
-#### 92. Consider a large vector Z, compute Z to the power of 3 using 3 different methods (★★★)
+#### 92. Consider a large tensor Z, compute Z to the power of 3 using 3 different methods (★★★)
 
 #### 93. Consider two arrays A and B of shape (8,3) and (2,2). How to find rows of A that contain elements of each row of B regardless of the order of the elements in B? (★★★)
 
 #### 94. Considering a 10x3 matrix, extract rows with unequal values (e.g. [2,2,3]) (★★★)
 
-#### 95. Convert a vector of ints into a matrix binary representation (★★★)
+#### 95. Convert a tensor of ints into a matrix binary representation (★★★)
 
 #### 96. Given a two dimensional array, how to extract unique rows? (★★★)
 
-#### 97. Considering 2 vectors A & B, write the einsum equivalent of inner, outer, sum, and mul function (★★★)
+#### 97. Considering 2 tensors A & B, write the einsum equivalent of inner, outer, sum, and mul function (★★★)
 
-#### 98. Considering a path described by two vectors (X,Y), how to sample it using equidistant samples (★★★)?
+#### 98. Considering a path described by two tensors (X,Y), how to sample it using equidistant samples (★★★)?
 
 #### 99. Given an integer n and a 2D array X, select from X the rows which can be interpreted as draws from a multinomial distribution with n degrees, i.e., the rows which only contain integers and which sum to n. (★★★)
 
