@@ -191,7 +191,7 @@ Z = t.nn.functional.pad(Z, (1, 1, 1, 1), mode='constant', value=0)
 print(Z)
 
 < q17
-What is the result of the following expression? (★☆☆)
+What are the results of the following expressions? (★☆☆)
 ```python
 0 * t.nan
 t.nan == t.nan
@@ -235,13 +235,13 @@ Z[::2,1::2] = 1
 print(Z)
 
 < q20
-Consider a (6,7,8) shape tensor, what is the index (x,y,z) of the 100th element? (★☆☆)
+Consider a (6, 7, 8)-shape tensor, what is the index (x, y, z) of the 100th element? (★☆☆)
 
 < h20
-hint: t.unravel_index
+hint: torch doesn't have the equivalent of the np.unravel_index function. Still, it should be possible to implement this yourself.
 
 < a20
-print(t.unravel_index(99,(6,7,8)))
+
 
 < q21
 Create a checkerboard 8x8 matrix using the tile function (★☆☆)
